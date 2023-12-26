@@ -5,7 +5,7 @@ import requests
 import base64
 
 def call_api(image):
-    url = "http://localhost:5000/predict"
+    url = "http://luziaapi.gabrielaranha.com/predict"
     image_bytes = io.BytesIO()
     image.save(image_bytes, format="PNG")
     image_bytes.seek(0)
@@ -23,10 +23,7 @@ st.title("LuzIA - Retina Image Classifier")
 uploaded_file = st.file_uploader("Upload a Retina Image", type=["png", "jpg", "jpeg"])
 
 print_dict = {
-    'cataract': {'name': 'Cataract', 0: 'Cataract', 1: 'Normal'},
-    'public_excavation': {'name': 'Abnormal excavation', 0: 'Abnormal', 1: 'Normal'},
-    'public_dr': {'name': 'Referable DR', 0: 'Referable', 1: 'Normal'},
-    'vessel': {'name': 'Abnormal vessels', 0: 'Abnormal', 1: 'Normal'},
+    'rd': {'name': 'Referable DR', 1: 'Referable', 0: 'Normal'}
 }
 
 if uploaded_file is not None:
