@@ -5,7 +5,7 @@ import requests
 import base64
 
 def call_api(image):
-    url = "http://luziaapi.gabrielaranha.com/predict"
+    url = "https://luziaapi.gabrielaranha.com/predict"
     image_bytes = io.BytesIO()
     image.save(image_bytes, format="PNG")
     image_bytes.seek(0)
