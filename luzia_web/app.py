@@ -4,13 +4,13 @@ import io
 import requests
 import base64
 
-def call_api(image):
+def call_api(image, model_type):
     url = "https://luziaapi.gabrielaranha.com/predict"
     image_bytes = io.BytesIO()
     image.save(image_bytes, format="PNG")
     image_bytes.seek(0)
 
-    response = requests.post(url, files={"file": image_bytes})
+    response = requests.post(url, files={"file": image_bytes}, data={"model": model_type})
     
     if response.status_code == 200:
         return response.json()
@@ -20,10 +20,14 @@ def call_api(image):
 
 st.title("LuzIA - Retina Image Classifier")
 
+model_type = st.selectbox("Select a Model Type", ["rd", "excavation", "cataract"])
+
 uploaded_file = st.file_uploader("Upload a Retina Image", type=["png", "jpg", "jpeg"])
 
 print_dict = {
-    'rd': {'name': 'Referable DR', 1: 'Referable', 0: 'Normal'}
+    'rd': {'name': 'Referable DR', 1: 'Referable', 0: 'Normal'},
+    'excavation': {'name': 'Optic Disc Excavation', 1: 'Abnormal', 0: 'Normal'},
+    'cataract': {'name': 'Cataract', 1: 'Present', 0: 'Absent'}
 }
 
 if uploaded_file is not None:
@@ -31,7 +35,7 @@ if uploaded_file is not None:
     st.image(image, caption="Uploaded Retina Image", use_column_width=True)
     
     try:
-        result = call_api(image)
+        result = call_api(image, model_type)
 
         # Display the JSON prediction results
         st.subheader("Prediction Results")
